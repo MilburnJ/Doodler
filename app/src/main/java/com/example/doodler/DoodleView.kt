@@ -21,7 +21,7 @@ class DoodleView @JvmOverloads constructor(
         isAntiAlias = true
         isDither = true
     }
-
+    private var alphaValue: Int = 255 // Default to fully opaque
     private val pathHistory = mutableListOf<Pair<Path, Paint>>() // Tracks paths and paints
     private val redoStack = mutableListOf<Pair<Path, Paint>>()   // Tracks redo paths
 
@@ -71,6 +71,12 @@ class DoodleView @JvmOverloads constructor(
 
     fun setBrushColor(color: Int) {
         paint.color = color
+    }
+
+    fun setOpacity(opacity: Float) {
+        alphaValue = (opacity * 255).toInt() // Convert 0..1 to 0..255
+        paint.alpha = alphaValue // Update the Paint object
+        invalidate()
     }
 
     fun undo() {
